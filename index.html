@@ -3,79 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zeepredict - Sports Predictions</title>
+    <title>Zeepredict - Home</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
-            color: white;
-            min-height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%);
+            color: #e2e8f0;
+            margin: 0;
+            padding: 0;
         }
-        .nav {
+        .header {
             background: rgba(15, 23, 42, 0.95);
             padding: 1rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            border-bottom: 1px solid #334155;
         }
-        .logo { font-size: 1.8rem; font-weight: bold; }
-        .links a {
-            color: white;
-            margin-left: 30px;
+        .nav a {
+            color: #e2e8f0;
+            margin: 0 15px;
             text-decoration: none;
+            font-weight: 500;
         }
         .hero {
             text-align: center;
-            padding: 120px 20px;
+            padding: 6rem 2rem;
         }
         .hero h1 {
             font-size: 3.5rem;
-            margin-bottom: 20px;
+            margin-bottom: 1rem;
+        }
+        .hero p {
+            font-size: 1.4rem;
+            color: #94a3b8;
         }
         .btn {
-            display: inline-block;
-            padding: 16px 40px;
             background: #3b82f6;
             color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
             text-decoration: none;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            margin-top: 20px;
-        }
-        .admin-link {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #334155;
-            padding: 10px 20px;
-            border-radius: 50px;
-            text-decoration: none;
-            color: #60a5fa;
-            font-size: 0.95rem;
+            font-weight: bold;
+            margin-top: 2rem;
+            display: inline-block;
         }
     </style>
 </head>
 <body>
-    <div class="nav">
-        <div class="logo">⚽ Zeepredict</div>
-        <div class="links">
-            <a href="#">Predictions</a>
-            <a href="#">Leagues</a>
-            <a href="#">Stats</a>
+    <div class="header">
+        <h1>⚽ Zeepredict</h1>
+        <div class="nav">
+            <a href="index.html">Home</a>
+            <a href="predictions.html">Predictions</a>
             <a href="admin.html">Admin</a>
         </div>
     </div>
 
     <div class="hero">
         <h1>Accurate Daily Sports Predictions</h1>
-        <p style="font-size:1.4rem; max-width:700px; margin:0 auto 30px;">Get expert tips, probabilities, and analysis for football matches.</p>
-        <a href="admin.html" class="btn">Go to Admin Panel →</a>
+        <p>Football • Basketball • Tennis & more</p>
+        <a href="predictions.html" class="btn">View Today's Predictions →</a>
     </div>
-
-    <a href="admin.html" class="admin-link">👤 Admin Panel</a>
 </body>
 </html>

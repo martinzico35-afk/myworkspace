@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeepredict - Predictions</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e2937);
+            color: #e2e8f0;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background: rgba(15, 23, 42, 0.95);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+        }
+        .nav a {
+            color: #e2e8f0;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .prediction-card {
+            background: #1e2937;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #334155;
+        }
+        .league {
+            color: #60a5fa;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .match {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        .prediction {
+            color: #34d399;
+            font-size: 1.1rem;
+        }
+        .odds {
+            color: #fbbf24;
+        }
+        .writeup {
+            margin-top: 1rem;
+            line-height: 1.6;
+            color: #cbd5e1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⚽ Zeepredict</h1>
+        <div class="nav">
+            <a href="index.html">Home</a>
+            <a href="predictions.html">Predictions</a>
+            <a href="admin.html">Admin</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Today's Predictions</h2>
+        <div id="predictions-list"></div>
+    </div>
+
+    <script>
+        function loadPredictions() {
+            const predictions = JSON.parse(localStorage.getItem('zeepredict_tips') || '[]');
+            const container = document.getElementById('predictions-list');
+            container.innerHTML = '';
+
+            if (predictions.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #64748b;">No predictions yet. Add some from the Admin panel!</p>';
+                return;
+            }
+
+            predictions.forEach((tip, index) => {
+                const card = document.createElement('div');
+                card.className = 'prediction-card';
+                card.innerHTML = `
+                    <div class="league">${tip.league || 'Unknown League'}</div>
+                    <div class="match">${tip.match}</div>
+                    <div class="prediction">Prediction: <strong>${tip.prediction}</strong></div>
+                    <div class="odds">Odds: ${tip.odds}</div>
+                    <div class="writeup">${tip.writeup}</div>
+                    <small style="color: #64748b;">Added: ${new Date(tip.date).toLocaleDateString()}</small>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        window.onload = loadPredictions;
+    </script>
+</body>
+</html>
