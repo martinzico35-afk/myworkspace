@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeepredict - Admin Panel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: #1e2937;
+            padding: 20px;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #60a5fa;
+            margin-bottom: 40px;
+        }
+        nav a {
+            display: block;
+            padding: 12px 16px;
+            color: #cbd5e1;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        nav a:hover, nav a.active {
+            background: #334155;
+            color: white;
+        }
+        .main {
+            margin-left: 260px;
+            padding: 30px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: #1e2937;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            background: #334155;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            margin-bottom: 16px;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .tips-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .tip-item {
+            background: #334155;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">⚽ Zeepredict</div>
+        <nav>
+            <a href="#" class="active">Dashboard</a>
+            <a href="#">New Tip</a>
+            <a href="#">Past Tips</a>
+            <a href="#">Leagues</a>
+            <a href="#">Users</a>
+            <a href="index.html">View Public Site</a>
+        </nav>
+    </div>
+
+    <div class="main">
+        <div class="header">
+            <h1>Admin Dashboard</h1>
+            <div>Welcome, Admin</div>
+        </div>
+
+        <div class="card">
+            <h2>Add New Daily Tip</h2>
+            <form id="tipForm">
+                <input type="text" id="match" placeholder="Match (e.g. Man City vs Arsenal)" required>
+                <input type="text" id="prediction" placeholder="Prediction (e.g. Man City Win)" required>
+                <input type="text" id="odds" placeholder="Odds (e.g. 1.85)" >
+                <textarea id="writeup" rows="5" placeholder="Write-up / Reasoning..." required></textarea>
+                <select id="league">
+                    <option value="Premier League">Premier League</option>
+                    <option value="La Liga">La Liga</option>
+                    <option value="Serie A">Serie A</option>
+                    <option value="Bundesliga">Bundesliga</option>
+                    <option value="Champions League">Champions League</option>
+                </select>
+                <button type="submit">Publish Tip</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Recent Tips</h2>
+            <div id="tipsList" class="tips-list"></div>
+        </div>
+    </div>
+
+    <script>
+        // Simple in-memory storage (localStorage)
+        let tips = JSON.parse(localStorage.getItem('zeepredict_tips')) || [];
+
+        function renderTips() {
+            const list = document.getElementById('tipsList');
+            list.innerHTML = tips.map((tip, index) => `
+                <div class="tip-item">
+                    <strong>${tip.match}</strong> - ${tip.prediction} <span style="float:right; color:#60a5fa;">${tip.odds || ''}</span><br>
+                    <small>${tip.league} | ${new Date(tip.date).toLocaleDateString()}</small>
+                    <p style="margin-top:8px; opacity:0.9;">${tip.writeup}</p>
+                    <button onclick="deleteTip(${index})" style="background:#ef4444; margin-top:8px;">Delete</button>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('tipForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newTip = {
+                match: document.getElementById('match').value,
+                prediction: document.getElementById('prediction').value,
+                odds: document.getElementById('odds').value,
+                writeup: document.getElementById('writeup').value,
+                league: document.getElementById('league').value,
+                date: new Date().toISOString()
+            };
+            tips.unshift(newTip);
+            localStorage.setItem('zeepredict_tips', JSON.stringify(tips));
+            renderTips();
+            this.reset();
+            alert('Tip published successfully!');
+        });
+
+        function deleteTip(index) {
+            if (confirm('Delete this tip?')) {
+                tips.splice(index, 1);
+                localStorage.setItem('zeepredict_tips', JSON.stringify(tips));
+                renderTips();
+            }
+        }
+
+        // Load tips on start
+        renderTips();
+    </script>
+</body>
+</html>
