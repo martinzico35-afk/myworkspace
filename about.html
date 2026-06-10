@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeepredict - About</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">⚽ Zeepredict</a>
+        <nav class="nav" id="nav-menu">
+            <a href="index.html">Home</a>
+            <a href="predictions.html">Predictions</a>
+            <a href="fixtures.html">Fixtures</a>
+            <a href="about.html" class="active">About</a>
+            <a href="admin.html">Admin</a>
+        </nav>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <button onclick="toggleDarkMode()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;margin-left:1rem;">🌙</button>
+    </header>
+
+    <div class="container">
+        <div class="card" style="max-width: 800px; margin: 2rem auto;">
+            <h1>About Zeepredict</h1>
+            <p style="font-size: 1.2rem; margin: 2rem 0;">We deliver high-accuracy sports predictions using advanced analytics, historical data, and expert insight.</p>
+            
+            <h2>Our Mission</h2>
+            <p>Help bettors and fans make informed decisions with transparent, data-backed predictions.</p>
+
+            <h2>Contact Us</h2>
+            <p>Email: <a href="mailto:info@zeepredict.com" style="color:#60a5fa;">info@zeepredict.com</a></p>
+            <p>Follow us on X for daily tips.</p>
+        </div>
+    </div>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        hamburger.addEventListener('click', () => navMenu.classList.toggle('active'));
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+        if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark-mode');
+    </script>
+</body>
+</html>
