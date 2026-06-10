@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeepredict - Fixtures</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .fixture {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 12px;
+            border-left: 5px solid #3b82f6;
+        }
+        .teams {
+            flex: 1;
+        }
+        .time {
+            font-weight: bold;
+            color: #fbbf24;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">⚽ Zeepredict</a>
+        <nav class="nav" id="nav-menu">
+            <a href="index.html">Home</a>
+            <a href="predictions.html">Predictions</a>
+            <a href="fixtures.html" class="active">Fixtures</a>
+            <a href="about.html">About</a>
+            <a href="admin.html">Admin</a>
+        </nav>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <button onclick="toggleDarkMode()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;margin-left:1rem;">🌙</button>
+    </header>
+
+    <div class="container">
+        <h1 style="text-align: center; margin-bottom: 3rem;">Today's Fixtures & Live Scores</h1>
+        <div id="fixtures-list"></div>
+    </div>
+
+    <script>
+        const sampleFixtures = [
+            { league: "Premier League", match: "Liverpool vs Manchester City", time: "15:00", status: "Live" },
+            { league: "La Liga", match: "Real Madrid vs Barcelona", time: "20:00", status: "Upcoming" },
+            { league: "Serie A", match: "Juventus vs Inter", time: "18:30", status: "FT" }
+        ];
+
+        function loadFixtures() {
+            const container = document.getElementById('fixtures-list');
+            container.innerHTML = sampleFixtures.map(f => `
+                <div class="fixture card">
+                    <div>
+                        <strong>${f.league}</strong><br>
+                        <span class="teams">${f.match}</span>
+                    </div>
+                    <div style="text-align:right;">
+                        <div class="time">${f.time}</div>
+                        <span style="color: ${f.status === 'Live' ? '#34d399' : '#64748b'}">${f.status}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Shared scripts: mobile + dark mode
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        hamburger.addEventListener('click', () => navMenu.classList.toggle('active'));
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+        if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark-mode');
+
+        window.onload = loadFixtures;
+    </script>
+</body>
+</html>
