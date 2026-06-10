@@ -6,75 +6,55 @@
     <title>Zeepredict - Predictions</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0f172a, #1e2937);
-            color: #e2e8f0;
-            margin: 0;
-            padding: 0;
-        }
-        .header {
-            background: rgba(15, 23, 42, 0.95);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #334155;
-        }
-        .nav a {
-            color: #e2e8f0;
-            margin: 0 15px;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
         .prediction-card {
-            background: #1e2937;
-            border-radius: 12px;
-            padding: 1.5rem;
+            background: var(--card);
+            border-radius: 16px;
+            padding: 1.8rem;
             margin-bottom: 1.5rem;
             border: 1px solid #334155;
         }
         .league {
             color: #60a5fa;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 600;
+            margin-bottom: 0.5rem;
         }
         .match {
-            font-size: 1.3rem;
+            font-size: 1.35rem;
             font-weight: bold;
-            margin: 0.5rem 0;
+            margin: 0.6rem 0;
         }
         .prediction {
-            color: #34d399;
-            font-size: 1.1rem;
+            color: var(--success);
+            font-size: 1.15rem;
+            font-weight: 600;
         }
         .odds {
-            color: #fbbf24;
-        }
-        .writeup {
-            margin-top: 1rem;
-            line-height: 1.6;
-            color: #cbd5e1;
+            color: var(--accent);
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>⚽ Zeepredict</h1>
-        <div class="nav">
+    <header class="header">
+        <a href="index.html" class="logo">⚽ Zeepredict</a>
+        <nav class="nav" id="nav-menu">
             <a href="index.html">Home</a>
-            <a href="predictions.html">Predictions</a>
+            <a href="predictions.html" class="active">Predictions</a>
+            <a href="fixtures.html">Fixtures</a>
+            <a href="about.html">About</a>
             <a href="admin.html">Admin</a>
+        </nav>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
-    </div>
+        <button onclick="toggleDarkMode()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;margin-left:1rem;">🌙</button>
+    </header>
 
     <div class="container">
-        <h2>Today's Predictions</h2>
+        <h1 style="text-align: center; margin-bottom: 3rem;">Today's Predictions</h1>
         <div id="predictions-list"></div>
     </div>
 
@@ -85,24 +65,35 @@
             container.innerHTML = '';
 
             if (predictions.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #64748b;">No predictions yet. Add some from the Admin panel!</p>';
+                container.innerHTML = '<div class="card" style="text-align: center; padding: 4rem;"><p style="color: #64748b; font-size: 1.2rem;">No predictions yet.<br>Add some from the <a href="admin.html" style="color:#60a5fa;">Admin panel</a>!</p></div>';
                 return;
             }
 
-            predictions.forEach((tip, index) => {
+            predictions.forEach((tip) => {
                 const card = document.createElement('div');
                 card.className = 'prediction-card';
                 card.innerHTML = `
                     <div class="league">${tip.league || 'Unknown League'}</div>
                     <div class="match">${tip.match}</div>
                     <div class="prediction">Prediction: <strong>${tip.prediction}</strong></div>
-                    <div class="odds">Odds: ${tip.odds}</div>
-                    <div class="writeup">${tip.writeup}</div>
-                    <small style="color: #64748b;">Added: ${new Date(tip.date).toLocaleDateString()}</small>
+                    <div class="odds">Odds: ${tip.odds || 'N/A'}</div>
+                    <div class="writeup" style="margin-top: 1.2rem; line-height: 1.7; color: #cbd5e1;">${tip.writeup}</div>
+                    <small style="color: #64748b; display: block; margin-top: 1rem;">Added: ${new Date(tip.date).toLocaleDateString()}</small>
                 `;
                 container.appendChild(card);
             });
         }
+
+        // Mobile Menu & Dark Mode
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        hamburger.addEventListener('click', () => navMenu.classList.toggle('active'));
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+        if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark-mode');
 
         window.onload = loadPredictions;
     </script>
