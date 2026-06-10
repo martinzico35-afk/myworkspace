@@ -4,66 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zeepredict - Home</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%);
-            color: #e2e8f0;
-            margin: 0;
-            padding: 0;
-        }
-        .header {
-            background: rgba(15, 23, 42, 0.95);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #334155;
-        }
-        .nav a {
-            color: #e2e8f0;
-            margin: 0 15px;
-            text-decoration: none;
-            font-weight: 500;
-        }
         .hero {
             text-align: center;
-            padding: 6rem 2rem;
-        }
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-        }
-        .hero p {
-            font-size: 1.4rem;
-            color: #94a3b8;
-        }
-        .btn {
-            background: #3b82f6;
+            padding: 8rem 2rem 6rem;
+            background: linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)), url('https://picsum.photos/id/1015/2000/1200') center/cover no-repeat;
             color: white;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 2rem;
-            display: inline-block;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+        .stat {
+            text-align: center;
+            padding: 2rem;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>⚽ Zeepredict</h1>
-        <div class="nav">
-            <a href="index.html">Home</a>
+    <header class="header">
+        <a href="index.html" class="logo">⚽ Zeepredict</a>
+        <nav class="nav" id="nav-menu">
+            <a href="index.html" class="active">Home</a>
             <a href="predictions.html">Predictions</a>
+            <a href="fixtures.html">Fixtures</a>
+            <a href="about.html">About</a>
             <a href="admin.html">Admin</a>
+        </nav>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <button onclick="toggleDarkMode()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;margin-left:1rem;">🌙</button>
+    </header>
+
+    <section class="hero">
+        <h1 style="font-size: 3.8rem; margin-bottom: 1rem;">Accurate Daily Sports Predictions</h1>
+        <p style="font-size: 1.5rem; max-width: 700px; margin: 0 auto 2.5rem; color: #cbd5e1;">Football • Basketball • Tennis & more.<br>Powered by data & expert analysis.</p>
+        <a href="predictions.html" class="btn">View Today's Predictions →</a>
+    </section>
+
+    <div class="container">
+        <div class="features">
+            <div class="card stat">
+                <h3 style="color: #34d399;">98%</h3>
+                <p>Win Rate on Top Leagues</p>
+            </div>
+            <div class="card stat">
+                <h3 style="color: #34d399;">500+</h3>
+                <p>Matches Analyzed Daily</p>
+            </div>
+            <div class="card stat">
+                <h3 style="color: #34d399;">24/7</h3>
+                <p>Live Updates</p>
+            </div>
+        </div>
+
+        <h2 style="text-align:center; margin:3rem 0 2rem; color: #60a5fa;">Why Choose Zeepredict?</h2>
+        <div class="features">
+            <div class="card">
+                <h3>🔍 Expert Analysis</h3>
+                <p>Data-driven insights from form, H2H, injuries, and weather.</p>
+            </div>
+            <div class="card">
+                <h3>📊 Value Bets</h3>
+                <p>Focus on high-odds value predictions with detailed reasoning.</p>
+            </div>
+            <div class="card">
+                <h3>⚡ Real-Time</h3>
+                <p>Updated throughout the day with live score integration.</p>
+            </div>
         </div>
     </div>
 
-    <div class="hero">
-        <h1>Accurate Daily Sports Predictions</h1>
-        <p>Football • Basketball • Tennis & more</p>
-        <a href="predictions.html" class="btn">View Today's Predictions →</a>
-    </div>
+    <script>
+        // Mobile Menu
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+        }
+
+        // Load saved dark mode
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
 </body>
 </html>
