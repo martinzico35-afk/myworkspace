@@ -1,0 +1,148 @@
+/* Zeepredict Shared Styles */
+:root {
+  --primary: #3b82f6;
+  --success: #34d399;
+  --accent: #fbbf24;
+  --dark: #0f172a;
+  --card: #1e2937;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.header {
+  background: rgba(15, 23, 42, 0.98);
+  backdrop-filter: blur(10px);
+  padding: 1rem 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #334155;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #60a5fa;
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav a:hover, .nav a.active {
+  color: var(--primary);
+}
+
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background: white;
+  margin: 4px 0;
+  transition: 0.3s;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 5%;
+}
+
+/* Dark Mode */
+.dark-mode {
+  --dark: #020617;
+  --card: #0f172a;
+}
+
+.btn {
+  background: var(--primary);
+  color: white;
+  padding: 0.9rem 2rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s;
+  display: inline-block;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+}
+
+/* Cards */
+.card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid #334155;
+}
+
+.prediction-card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #334155;
+  transition: transform 0.3s;
+}
+
+.prediction-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: #0f172a;
+    padding: 1rem;
+  }
+  .nav.active {
+    display: flex;
+  }
+  .hamburger {
+    display: flex;
+  }
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+}
