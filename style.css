@@ -1,0 +1,93 @@
+/* Zeepredict Shared Styles */
+:root {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e2937;
+  --accent: #3b82f6;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --success: #34d399;
+  --warning: #fbbf24;
+  --border: #334155;
+}
+
+.light-mode {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --accent: #2563eb;
+  --text: #0f172a;
+  --text-muted: #475569;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --border: #e2e8f0;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  transition: background 0.3s, color 0.3s;
+}
+
+.header {
+  background: rgba(15, 23, 42, 0.95);
+  padding: 1rem 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.light-mode .header {
+  background: rgba(248, 250, 252, 0.95);
+}
+
+.nav a {
+  color: var(--text);
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav a:hover {
+  color: var(--accent);
+}
+
+.btn {
+  background: var(--accent);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgb(59 130 246 / 0.3);
+}
+
+/* Toggle Button */
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  background: rgba(255,255,255,0.1);
+}

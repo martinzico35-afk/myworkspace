@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeepredict - Home</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), 
+                        url('https://picsum.photos/id/1016/1920/1080') center/cover no-repeat fixed;
+            min-height: 100vh;
+        }
+        .light-mode body {
+            background: linear-gradient(rgba(248, 250, 252, 0.95), rgba(248, 250, 252, 0.95)), 
+                        url('https://picsum.photos/id/1016/1920/1080') center/cover no-repeat fixed;
+        }
+        .hero {
+            text-align: center;
+            padding: 6rem 2rem;
+            color: white;
+        }
+        .light-mode .hero {
+            color: #0f172a;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        }
+        .hero p {
+            font-size: 1.4rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+        }
+        .light-mode .hero p {
+            color: #475569;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⚽ Zeepredict</h1>
+        <div class="nav">
+            <a href="index.html">Home</a>
+            <a href="predictions.html">Predictions</a>
+            <a href="admin.html">Admin</a>
+        </div>
+        <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">🌙</button>
+    </div>
+
+    <div class="hero">
+        <h1>Accurate Daily Sports Predictions</h1>
+        <p>Football • Basketball • Tennis & more</p>
+        <a href="predictions.html" class="btn">View Today's Predictions →</a>
+    </div>
+
+    <script>
+        // Theme Toggle
+        const toggleBtn = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        function setTheme(isLight) {
+            if (isLight) {
+                html.classList.add('light-mode');
+                toggleBtn.textContent = '☀️';
+            } else {
+                html.classList.remove('light-mode');
+                toggleBtn.textContent = '🌙';
+            }
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            const isLight = !html.classList.contains('light-mode');
+            setTheme(isLight);
+        });
+
+        // Load saved theme
+        if (localStorage.getItem('theme') === 'light') {
+            setTheme(true);
+        }
+    </script>
+</body>
+</html>

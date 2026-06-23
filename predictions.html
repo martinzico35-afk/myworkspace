@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeepredict - Predictions</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .prediction-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+            transition: transform 0.2s;
+        }
+        .prediction-card:hover {
+            transform: translateY(-4px);
+        }
+        .league {
+            color: #60a5fa;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .light-mode .league {
+            color: #3b82f6;
+        }
+        .match {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        .prediction {
+            color: var(--success);
+            font-size: 1.1rem;
+        }
+        .odds {
+            color: var(--warning);
+        }
+        .writeup {
+            margin-top: 1rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+        .match-time {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⚽ Zeepredict</h1>
+        <div class="nav">
+            <a href="index.html">Home</a>
+            <a href="predictions.html">Predictions</a>
+            <a href="admin.html">Admin</a>
+        </div>
+        <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">🌙</button>
+    </div>
+
+    <div class="container">
+        <h2>Today's Predictions</h2>
+        <div id="predictions-list"></div>
+    </div>
+
+    <script>
+        function loadPredictions() {
+            const predictions = JSON.parse(localStorage.getItem('zeepredict_tips') || '[]');
+            const container = document.getElementById('predictions-list');
+            container.innerHTML = '';
+
+            if (predictions.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #64748b;">No predictions yet. Add some from the Admin panel!</p>';
+                return;
+            }
+
+            predictions.forEach((tip, index) => {
+                const card = document.createElement('div');
+                card.className = 'prediction-card';
+                const matchDate = tip.matchDate ? new Date(tip.matchDate).toLocaleString() : 'Date not set';
+                card.innerHTML = `
+                    <div class="league">${tip.league || 'Unknown League'}</div>
+                    <div class="match">${tip.match}</div>
+                    <div class="match-time">📅 ${matchDate}</div>
+                    <div class="prediction">Prediction: <strong>${tip.prediction}</strong></div>
+                    <div class="odds">Odds: ${tip.odds}</div>
+                    <div class="writeup">${tip.writeup}</div>
+                    <small style="color: var(--text-muted);">Added: ${new Date(tip.date).toLocaleDateString()}</small>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        window.onload = loadPredictions;
+
+        // Theme Toggle
+        const toggleBtn = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        function setTheme(isLight) {
+            if (isLight) {
+                html.classList.add('light-mode');
+                toggleBtn.textContent = '☀️';
+            } else {
+                html.classList.remove('light-mode');
+                toggleBtn.textContent = '🌙';
+            }
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            const isLight = !html.classList.contains('light-mode');
+            setTheme(isLight);
+        });
+
+        // Load saved theme
+        if (localStorage.getItem('theme') === 'light') {
+            setTheme(true);
+        }
+    </script>
+</body>
+</html>
