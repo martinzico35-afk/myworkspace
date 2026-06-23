@@ -3,134 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
     <title>Zeepredict - Admin Panel</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9917;</text></svg>">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            min-height: 100vh;
-        }
-        .sidebar {
-            background: var(--bg-secondary);
-        }
-        .main {
+        /* ---- Auth Overlay ---- */
+        .auth-overlay {
+            position: fixed;
+            inset: 0;
             background: var(--bg-primary);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .card {
+        .auth-overlay.hidden { display: none; }
+        .auth-box {
             background: var(--bg-secondary);
             border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
         }
-        input, textarea, select {
-            background: #334155;
-            color: white;
+        .auth-box h2 { margin-bottom: 1.5rem; }
+        .auth-box input {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-primary);
             border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            margin-bottom: 1rem;
+            font-size: 1rem;
         }
-        .light-mode input, .light-mode textarea, .light-mode select {
-            background: #e2e8f0;
-            color: #0f172a;
-        }
-        .sidebar {
+        .auth-box input:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+        .auth-error { color: #f87171; font-size: 0.9rem; margin-top: 0.5rem; min-height: 1.2em; }
+
+        /* ---- Admin Layout ---- */
+        .admin-sidebar {
             position: fixed;
             left: 0;
             top: 0;
             width: 260px;
             height: 100vh;
-            background: #1e2937;
+            background: var(--bg-secondary);
             padding: 20px;
+            border-right: 1px solid var(--border);
+            z-index: 200;
+            overflow-y: auto;
         }
-        .logo {
+        .admin-sidebar .logo {
             font-size: 1.8rem;
             font-weight: bold;
             color: #60a5fa;
             margin-bottom: 40px;
         }
-        nav a {
+        .admin-sidebar nav a {
             display: block;
             padding: 12px 16px;
-            color: #cbd5e1;
+            color: var(--text-muted);
             text-decoration: none;
             border-radius: 8px;
             margin-bottom: 8px;
+            transition: background 0.2s, color 0.2s;
         }
-        nav a:hover, nav a.active {
-            background: #334155;
-            color: white;
+        .admin-sidebar nav a:hover,
+        .admin-sidebar nav a.active {
+            background: var(--border);
+            color: var(--text);
         }
-        .main {
+
+        /* Mobile sidebar toggle */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 300;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 150;
+        }
+
+        .admin-main {
             margin-left: 260px;
             padding: 30px;
+            min-height: 100vh;
         }
-        .header {
+        .admin-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
+
         .card {
-            background: #1e2937;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
             border-radius: 12px;
             padding: 24px;
             margin-bottom: 24px;
         }
-        input, textarea, select {
+        .card h2 { margin-top: 0; }
+
+        /* ---- Form Styles ---- */
+        .admin-form input,
+        .admin-form textarea,
+        .admin-form select {
             width: 100%;
             padding: 12px;
-            background: #334155;
-            border: none;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
             border-radius: 8px;
-            color: white;
+            color: var(--text);
             margin-bottom: 16px;
+            font-size: 1rem;
+            box-sizing: border-box;
         }
-        button {
-            background: #3b82f6;
-            color: white;
+        .admin-form input:focus,
+        .admin-form textarea:focus,
+        .admin-form select:focus {
+            outline: 2px solid var(--accent);
+            border-color: var(--accent);
+        }
+        .admin-form textarea { resize: vertical; }
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
             border: none;
-            padding: 12px 24px;
+            padding: 12px 28px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
+            font-size: 1rem;
+            transition: opacity 0.2s;
         }
-        .tips-list {
-            max-height: 500px;
-            overflow-y: auto;
+        .btn-primary:hover { opacity: 0.9; }
+        .btn-danger {
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            transition: opacity 0.2s;
         }
+        .btn-danger:hover { opacity: 0.85; }
+
+        /* ---- Tip Item ---- */
+        .tips-list { max-height: 600px; overflow-y: auto; }
         .tip-item {
-            background: #334155;
+            background: var(--bg-primary);
             padding: 16px;
             border-radius: 8px;
             margin-bottom: 12px;
+            border: 1px solid var(--border);
+        }
+        .tip-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .tip-item-league {
+            font-size: 0.85rem;
+            color: #60a5fa;
+            font-weight: 600;
+        }
+        .light-mode .tip-item-league { color: #3b82f6; }
+        .tip-item-odds {
+            color: var(--warning);
+            font-weight: 600;
+        }
+        .tip-item-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        .tip-item-writeup {
+            margin-top: 8px;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+        .tip-item-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .status-select {
+            padding: 6px 10px;
+            border-radius: 6px;
+            background: var(--bg-secondary);
+            color: var(--text);
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+            width: auto;
+            margin-bottom: 0;
+        }
+        .empty-tips {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 2rem;
+        }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 768px) {
+            .sidebar-toggle { display: flex; }
+            .admin-sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .admin-sidebar.open { transform: translateX(0); }
+            .sidebar-backdrop.open { display: block; }
+            .admin-main { margin-left: 0; padding: 70px 16px 30px; }
         }
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="logo">⚽ Zeepredict</div>
-        <nav>
-            <a href="#" class="active">Dashboard</a>
-            <a href="#">New Tip</a>
-            <a href="#">Past Tips</a>
-            <a href="#">Leagues</a>
-            <a href="#">Users</a>
-            <a href="index.html">View Public Site</a>
-        </nav>
+    <!-- Auth Gate -->
+    <div class="auth-overlay" id="authOverlay">
+        <div class="auth-box">
+            <h2>&#128274; Admin Login</h2>
+            <form id="authForm">
+                <input type="password" id="authPassword" placeholder="Enter admin password" autocomplete="off" required>
+                <button type="submit" class="btn-primary" style="width:100%;">Login</button>
+            </form>
+            <div class="auth-error" id="authError"></div>
+        </div>
     </div>
 
-    <div class="main">
-        <div class="header">
+    <!-- Mobile sidebar toggle -->
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">&#9776;</button>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="logo">&#9917; Zeepredict</div>
+        <nav>
+            <a href="#section-dashboard" class="active" data-section="section-dashboard">Dashboard</a>
+            <a href="#section-add" data-section="section-add">New Tip</a>
+            <a href="#section-tips" data-section="section-tips">Manage Tips</a>
+            <a href="index.html">View Public Site</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main" id="adminContent">
+        <div class="admin-header">
             <h1>Admin Dashboard</h1>
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <div>Welcome, Admin</div>
-                <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode" style="margin-left: 10px;">🌙</button>
+            <div style="display:flex; align-items:center; gap:15px;">
+                <span>Welcome, Admin</span>
+                <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode" aria-label="Toggle theme">&#127769;</button>
+                <button class="btn-danger" id="logoutBtn" style="margin:0;">Logout</button>
             </div>
         </div>
 
-        <div class="card">
+        <!-- Stats -->
+        <section class="card" id="section-dashboard">
+            <h2>Statistics</h2>
+            <div id="adminStats"></div>
+        </section>
+
+        <!-- Add Tip Form -->
+        <section class="card" id="section-add">
             <h2>Add New Daily Tip</h2>
-            <form id="tipForm">
+            <form id="tipForm" class="admin-form">
                 <input type="text" id="match" placeholder="Match (e.g. Man City vs Arsenal)" required>
                 <input type="datetime-local" id="matchDate" required>
                 <input type="text" id="prediction" placeholder="Prediction (e.g. Man City Win)" required>
-                <input type="text" id="odds" placeholder="Odds (e.g. 1.85)" >
+                <input type="text" id="odds" placeholder="Odds (e.g. 1.85)">
                 <textarea id="writeup" rows="5" placeholder="Write-up / Reasoning..." required></textarea>
                 <select id="league">
                     <option value="Premier League">Premier League</option>
@@ -138,86 +300,184 @@
                     <option value="Serie A">Serie A</option>
                     <option value="Bundesliga">Bundesliga</option>
                     <option value="Champions League">Champions League</option>
+                    <option value="Ligue 1">Ligue 1</option>
+                    <option value="Other">Other</option>
                 </select>
-                <button type="submit">Publish Tip</button>
+                <button type="submit" class="btn-primary">Publish Tip</button>
             </form>
-        </div>
+        </section>
 
-        <div class="card">
-            <h2>Recent Tips</h2>
+        <!-- Tips List -->
+        <section class="card" id="section-tips">
+            <h2>Manage Tips</h2>
             <div id="tipsList" class="tips-list"></div>
-        </div>
-    </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 Zeepredict. All rights reserved.</p>
+    </footer>
+
+    <!-- Shared scripts -->
+    <script src="predictions-data.js"></script>
+    <script src="utils.js"></script>
+    <script src="theme.js"></script>
 
     <script>
-        // Simple in-memory storage (localStorage)
-        let tips = JSON.parse(localStorage.getItem('zeepredict_tips')) || [];
+        /* ---- Simple Password Auth ---- */
+        var ADMIN_PASS = 'zeepredict2025';
+        var AUTH_KEY = 'zeepredict_auth';
 
-        function renderTips() {
-            const list = document.getElementById('tipsList');
-            list.innerHTML = tips.map((tip, index) => `
-                <div class="tip-item">
-                    <strong>${tip.match}</strong> - ${tip.prediction} <span style="float:right; color:#60a5fa;">${tip.odds || ''}</span><br>
-                    <small>${tip.league} | ${new Date(tip.date).toLocaleDateString()}</small>
-                    <p style="margin-top:8px; opacity:0.9;">${tip.writeup}</p>
-                    <button onclick="deleteTip(${index})" style="background:#ef4444; margin-top:8px;">Delete</button>
-                </div>
-            `).join('');
+        function checkAuth() {
+            return sessionStorage.getItem(AUTH_KEY) === '1';
         }
 
-        document.getElementById('tipForm').addEventListener('submit', function(e) {
+        function showAdmin() {
+            document.getElementById('authOverlay').classList.add('hidden');
+        }
+
+        function hideAdmin() {
+            document.getElementById('authOverlay').classList.remove('hidden');
+            sessionStorage.removeItem(AUTH_KEY);
+        }
+
+        document.getElementById('authForm').addEventListener('submit', function (e) {
             e.preventDefault();
-            const newTip = {
-                match: document.getElementById('match').value,
-                prediction: document.getElementById('prediction').value,
-                odds: document.getElementById('odds').value,
-                writeup: document.getElementById('writeup').value,
+            var pass = document.getElementById('authPassword').value;
+            if (pass === ADMIN_PASS) {
+                sessionStorage.setItem(AUTH_KEY, '1');
+                showAdmin();
+                ZeepredictUtils.showToast('Welcome back, Admin!', 'success');
+            } else {
+                document.getElementById('authError').textContent = 'Incorrect password. Try again.';
+            }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', function () {
+            hideAdmin();
+            ZeepredictUtils.showToast('Logged out', 'info');
+        });
+
+        // On load, check auth state
+        if (checkAuth()) {
+            showAdmin();
+        }
+
+        /* ---- Mobile Sidebar ---- */
+        var sidebar = document.getElementById('adminSidebar');
+        var backdrop = document.getElementById('sidebarBackdrop');
+        var toggleBtn = document.getElementById('sidebarToggle');
+
+        function openSidebar() {
+            sidebar.classList.add('open');
+            backdrop.classList.add('open');
+        }
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            backdrop.classList.remove('open');
+        }
+        toggleBtn.addEventListener('click', function () {
+            sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+        });
+        backdrop.addEventListener('click', closeSidebar);
+
+        // Sidebar nav: scroll to section
+        document.querySelectorAll('.admin-sidebar nav a[data-section]').forEach(function (a) {
+            a.addEventListener('click', function (e) {
+                e.preventDefault();
+                var target = document.getElementById(this.getAttribute('data-section'));
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+                // Highlight active
+                document.querySelectorAll('.admin-sidebar nav a').forEach(function (el) { el.classList.remove('active'); });
+                this.classList.add('active');
+                closeSidebar();
+            });
+        });
+
+        /* ---- Stats ---- */
+        function renderAdminStats() {
+            var stats = window.PredictionDB.getWinRateStats();
+            document.getElementById('adminStats').innerHTML =
+                '<div class="stats-bar">' +
+                    '<div class="stat-card"><div class="stat-value">' + stats.totalTips + '</div><div class="stat-label">Total Tips</div></div>' +
+                    '<div class="stat-card"><div class="stat-value">' + stats.winRate + '%</div><div class="stat-label">Win Rate</div></div>' +
+                    '<div class="stat-card"><div class="stat-value">' + stats.wonCount + '/' + stats.resolvedCount + '</div><div class="stat-label">Won / Resolved</div></div>' +
+                    '<div class="stat-card"><div class="stat-value">' + stats.avgOdds + '</div><div class="stat-label">Avg Odds</div></div>' +
+                '</div>';
+        }
+
+        /* ---- Render Tips (XSS-safe) ---- */
+        function renderTips() {
+            var tips = window.PredictionDB.getTips();
+            var list = document.getElementById('tipsList');
+            renderAdminStats();
+
+            if (tips.length === 0) {
+                list.innerHTML = '<div class="empty-tips"><p>No tips yet. Add one above!</p></div>';
+                return;
+            }
+
+            var esc = ZeepredictUtils.escapeHtml;
+            list.innerHTML = tips.map(function (tip) {
+                var dateStr = tip.date ? new Date(tip.date).toLocaleDateString() : '';
+                var matchDateStr = tip.matchDate ? new Date(tip.matchDate).toLocaleString() : '';
+                return '<div class="tip-item" data-id="' + esc(tip.id) + '">' +
+                    '<div class="tip-item-header">' +
+                        '<div><strong>' + esc(tip.match) + '</strong> &mdash; ' + esc(tip.prediction) + '</div>' +
+                        '<div class="tip-item-odds">' + esc(tip.odds || '') + '</div>' +
+                    '</div>' +
+                    '<div class="tip-item-league">' + esc(tip.league || 'Other') + '</div>' +
+                    '<div class="tip-item-meta">' + esc(matchDateStr || dateStr) + '</div>' +
+                    '<div class="tip-item-writeup">' + esc(tip.writeup) + '</div>' +
+                    '<div class="tip-item-actions">' +
+                        '<select class="status-select" onchange="updateStatus(\'' + esc(tip.id) + '\', this.value)">' +
+                            '<option value="Pending"' + (tip.status === 'Pending' ? ' selected' : '') + '>Pending</option>' +
+                            '<option value="Won"' + (tip.status === 'Won' ? ' selected' : '') + '>Won</option>' +
+                            '<option value="Lost"' + (tip.status === 'Lost' ? ' selected' : '') + '>Lost</option>' +
+                        '</select>' +
+                        '<button class="btn-danger" onclick="deleteTip(\'' + esc(tip.id) + '\')">Delete</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        /* ---- Add Tip (uses PredictionDB) ---- */
+        document.getElementById('tipForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var tipData = {
+                match: document.getElementById('match').value.trim(),
+                prediction: document.getElementById('prediction').value.trim(),
+                odds: document.getElementById('odds').value.trim(),
+                writeup: document.getElementById('writeup').value.trim(),
                 league: document.getElementById('league').value,
                 matchDate: document.getElementById('matchDate').value,
-                date: new Date().toISOString()
+                status: 'Pending'
             };
-            tips.unshift(newTip);
-            localStorage.setItem('zeepredict_tips', JSON.stringify(tips));
+
+            window.PredictionDB.addTip(tipData);
             renderTips();
             this.reset();
-            alert('Tip published successfully!');
+            ZeepredictUtils.showToast('Tip published successfully!');
         });
 
-        function deleteTip(index) {
+        /* ---- Delete Tip (uses PredictionDB) ---- */
+        window.deleteTip = function (id) {
             if (confirm('Delete this tip?')) {
-                tips.splice(index, 1);
-                localStorage.setItem('zeepredict_tips', JSON.stringify(tips));
+                window.PredictionDB.deleteTip(id);
                 renderTips();
+                ZeepredictUtils.showToast('Tip deleted', 'info');
             }
-        }
+        };
 
-        // Load tips on start
-        renderTips();
+        /* ---- Update Status (uses PredictionDB) ---- */
+        window.updateStatus = function (id, status) {
+            window.PredictionDB.updateTipStatus(id, status);
+            renderTips();
+            ZeepredictUtils.showToast('Status updated to ' + status, 'success');
+        };
 
-        // Theme Toggle
-        const toggleBtn = document.getElementById('themeToggle');
-        const html = document.documentElement;
-
-        function setTheme(isLight) {
-            if (isLight) {
-                html.classList.add('light-mode');
-                toggleBtn.textContent = '☀️';
-            } else {
-                html.classList.remove('light-mode');
-                toggleBtn.textContent = '🌙';
-            }
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        }
-
-        toggleBtn.addEventListener('click', () => {
-            const isLight = !html.classList.contains('light-mode');
-            setTheme(isLight);
-        });
-
-        // Load saved theme
-        if (localStorage.getItem('theme') === 'light') {
-            setTheme(true);
-        }
+        /* ---- Init ---- */
+        window.addEventListener('DOMContentLoaded', renderTips);
     </script>
 </body>
 </html>

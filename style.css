@@ -1,4 +1,8 @@
-/* Zeepredict Shared Styles */
+/* ===================================
+   Zeepredict - Shared Styles
+   =================================== */
+
+/* ---- CSS Custom Properties ---- */
 :root {
   --bg-primary: #0f172a;
   --bg-secondary: #1e2937;
@@ -21,15 +25,26 @@
   --border: #e2e8f0;
 }
 
+/* ---- Reset & Base ---- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   background: var(--bg-primary);
   color: var(--text);
   margin: 0;
   padding: 0;
   transition: background 0.3s, color 0.3s;
+  line-height: 1.6;
 }
 
+img { max-width: 100%; display: block; }
+
+/* ---- Header ---- */
 .header {
   background: rgba(15, 23, 42, 0.95);
   padding: 1rem 5%;
@@ -40,32 +55,50 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .light-mode .header {
   background: rgba(248, 250, 252, 0.95);
 }
 
+.logo-text {
+  font-size: 1.3rem;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* ---- Navigation ---- */
+.nav {
+  display: flex;
+  gap: 5px;
+}
+
 .nav a {
   color: var(--text);
-  margin: 0 15px;
+  padding: 8px 14px;
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.2s;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
 }
 
 .nav a:hover {
   color: var(--accent);
+  background: rgba(59, 130, 246, 0.08);
 }
 
+/* ---- Buttons ---- */
 .btn {
+  display: inline-block;
   background: var(--accent);
   color: white;
   padding: 1rem 2rem;
   border-radius: 8px;
   text-decoration: none;
   font-weight: bold;
-  transition: all 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .btn:hover {
@@ -73,7 +106,7 @@ body {
   box-shadow: 0 10px 15px -3px rgb(59 130 246 / 0.3);
 }
 
-/* Toggle Button */
+/* ---- Theme Toggle ---- */
 .theme-toggle {
   background: none;
   border: none;
@@ -86,8 +119,138 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s;
 }
 
 .theme-toggle:hover {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.light-mode .theme-toggle:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* ---- Stats Bar (shared between predictions & admin) ---- */
+.stats-bar {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.2rem 1.8rem;
+  text-align: center;
+  flex: 1;
+  min-width: 120px;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ---- Footer ---- */
+.site-footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+/* ---- Toast Notifications ---- */
+#toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toast {
+  background: var(--bg-secondary);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: auto;
+  font-size: 0.95rem;
+  max-width: 360px;
+}
+
+.toast--visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.toast--success { border-left: 4px solid var(--success); }
+.toast--error   { border-left: 4px solid #f87171; }
+.toast--info    { border-left: 4px solid var(--accent); }
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .header {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0.8rem 4%;
+  }
+
+  .nav {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .nav a {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+  }
+
+  .stats-bar {
+    gap: 0.8rem;
+  }
+
+  .stat-card {
+    padding: 0.8rem 1rem;
+    min-width: 100px;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+
+  #toast-container {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+  }
+
+  .toast {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-text { font-size: 1.1rem; }
+  .nav a { padding: 6px 8px; font-size: 0.85rem; }
 }

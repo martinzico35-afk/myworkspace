@@ -3,83 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Zeepredict - Accurate daily sports predictions for football, basketball, tennis and more. Expert betting tips with detailed analysis.">
+    <meta name="keywords" content="sports predictions, football tips, betting tips, Zeepredict, match predictions, sports analysis">
+    <meta property="og:title" content="Zeepredict - Accurate Daily Sports Predictions">
+    <meta property="og:description" content="Football, Basketball, Tennis and more. Expert analysis delivered daily.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://martinzico35-afk.github.io/myworkspace/">
     <title>Zeepredict - Home</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9917;</text></svg>">
     <style>
         body {
-            background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), 
+            background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)),
                         url('https://picsum.photos/id/1016/1920/1080') center/cover no-repeat fixed;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-        .light-mode body {
-            background: linear-gradient(rgba(248, 250, 252, 0.95), rgba(248, 250, 252, 0.95)), 
+        .light-mode body,
+        .light-mode {
+            background: linear-gradient(rgba(248, 250, 252, 0.95), rgba(248, 250, 252, 0.95)),
                         url('https://picsum.photos/id/1016/1920/1080') center/cover no-repeat fixed;
         }
         .hero {
             text-align: center;
-            padding: 6rem 2rem;
+            padding: 6rem 2rem 4rem;
             color: white;
+            flex: 1;
         }
-        .light-mode .hero {
-            color: #0f172a;
-        }
+        .light-mode .hero { color: #0f172a; }
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: clamp(2rem, 5vw, 3.5rem);
             margin-bottom: 1rem;
             text-shadow: 0 4px 20px rgba(0,0,0,0.6);
         }
+        .light-mode .hero h1 { text-shadow: none; }
         .hero p {
-            font-size: 1.4rem;
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
             color: #cbd5e1;
             margin-bottom: 2rem;
         }
-        .light-mode .hero p {
-            color: #475569;
+        .light-mode .hero p { color: #475569; }
+        .features {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
         }
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+            max-width: 260px;
+            transition: transform 0.2s;
+        }
+        .feature-card:hover { transform: translateY(-4px); }
+        .feature-card .feature-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+        .feature-card h3 { margin: 0 0 0.5rem; }
+        .feature-card p { color: var(--text-muted); font-size: 0.95rem; margin: 0; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>⚽ Zeepredict</h1>
-        <div class="nav">
+    <header class="header">
+        <h1 class="logo-text">&#9917; Zeepredict</h1>
+        <nav class="nav">
             <a href="index.html">Home</a>
             <a href="predictions.html">Predictions</a>
             <a href="admin.html">Admin</a>
-        </div>
-        <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">🌙</button>
-    </div>
+        </nav>
+        <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode" aria-label="Toggle theme">&#127769;</button>
+    </header>
 
-    <div class="hero">
+    <section class="hero">
         <h1>Accurate Daily Sports Predictions</h1>
-        <p>Football • Basketball • Tennis & more</p>
-        <a href="predictions.html" class="btn">View Today's Predictions →</a>
-    </div>
+        <p>Football &bull; Basketball &bull; Tennis &amp; more</p>
+        <a href="predictions.html" class="btn">View Today's Predictions &rarr;</a>
+    </section>
 
-    <script>
-        // Theme Toggle
-        const toggleBtn = document.getElementById('themeToggle');
-        const html = document.documentElement;
+    <section class="features" aria-label="Platform features">
+        <article class="feature-card">
+            <div class="feature-icon">&#9917;</div>
+            <h3>Expert Analysis</h3>
+            <p>Detailed write-ups backed by stats and form analysis.</p>
+        </article>
+        <article class="feature-card">
+            <div class="feature-icon">&#128200;</div>
+            <h3>Track Record</h3>
+            <p>Transparent win/loss stats you can verify anytime.</p>
+        </article>
+        <article class="feature-card">
+            <div class="feature-icon">&#127760;</div>
+            <h3>Multi-League</h3>
+            <p>Covering Premier League, La Liga, Serie A, Bundesliga &amp; more.</p>
+        </article>
+    </section>
 
-        function setTheme(isLight) {
-            if (isLight) {
-                html.classList.add('light-mode');
-                toggleBtn.textContent = '☀️';
-            } else {
-                html.classList.remove('light-mode');
-                toggleBtn.textContent = '🌙';
-            }
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        }
+    <footer class="site-footer">
+        <p>&copy; 2025 Zeepredict. All rights reserved.</p>
+    </footer>
 
-        toggleBtn.addEventListener('click', () => {
-            const isLight = !html.classList.contains('light-mode');
-            setTheme(isLight);
-        });
-
-        // Load saved theme
-        if (localStorage.getItem('theme') === 'light') {
-            setTheme(true);
-        }
-    </script>
+    <script src="utils.js"></script>
+    <script src="theme.js"></script>
 </body>
 </html>

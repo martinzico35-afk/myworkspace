@@ -3,13 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zeepredict - Predictions</title>
+    <meta name="description" content="Zeepredict - Accurate daily sports predictions for football, basketball, tennis and more. Expert betting tips with detailed analysis.">
+    <meta name="keywords" content="sports predictions, football tips, betting tips, Zeepredict, match predictions, sports analysis">
+    <meta property="og:title" content="Zeepredict - Daily Sports Predictions">
+    <meta property="og:description" content="Accurate daily sports predictions for football, basketball, tennis and more.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://martinzico35-afk.github.io/myworkspace/">
+    <title>Zeepredict - Today's Predictions</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9917;</text></svg>">
     <style>
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
+        }
+        .stats-bar {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem 1.8rem;
+            text-align: center;
+            flex: 1;
+            min-width: 140px;
+        }
+        .stat-card .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+        .stat-card .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 4px;
         }
         .prediction-card {
             background: var(--bg-secondary);
@@ -17,113 +49,162 @@
             padding: 1.5rem;
             margin-bottom: 1.5rem;
             border: 1px solid var(--border);
-            transition: transform 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
         .prediction-card:hover {
             transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
         }
-        .league {
+        .prediction-card .league {
             color: #60a5fa;
             font-size: 0.9rem;
             font-weight: 600;
         }
-        .light-mode .league {
+        .light-mode .prediction-card .league {
             color: #3b82f6;
         }
-        .match {
+        .prediction-card .match {
             font-size: 1.3rem;
             font-weight: bold;
             margin: 0.5rem 0;
         }
-        .prediction {
+        .prediction-card .prediction {
             color: var(--success);
             font-size: 1.1rem;
         }
-        .odds {
+        .prediction-card .odds {
             color: var(--warning);
         }
-        .writeup {
+        .prediction-card .writeup {
             margin-top: 1rem;
             line-height: 1.6;
             color: var(--text-muted);
         }
-        .match-time {
+        .prediction-card .match-time {
             color: var(--text-muted);
             font-size: 0.95rem;
             margin-top: 8px;
         }
+        .status-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        .status-badge--won { background: rgba(52,211,153,0.15); color: var(--success); }
+        .status-badge--lost { background: rgba(248,113,113,0.15); color: #f87171; }
+        .status-badge--pending { background: rgba(251,191,36,0.15); color: var(--warning); }
+        .empty-state {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 4rem 1rem;
+        }
+        .empty-state p { font-size: 1.1rem; margin-bottom: 1rem; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>⚽ Zeepredict</h1>
-        <div class="nav">
+    <header class="header">
+        <h1 class="logo-text">&#9917; Zeepredict</h1>
+        <nav class="nav">
             <a href="index.html">Home</a>
             <a href="predictions.html">Predictions</a>
             <a href="admin.html">Admin</a>
-        </div>
-        <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">🌙</button>
-    </div>
+        </nav>
+        <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode" aria-label="Toggle theme">&#127769;</button>
+    </header>
 
-    <div class="container">
+    <main class="container">
         <h2>Today's Predictions</h2>
-        <div id="predictions-list"></div>
-    </div>
+
+        <section class="stats-bar" id="statsBar" aria-label="Prediction statistics"></section>
+
+        <section id="predictions-list" aria-label="Predictions list"></section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 Zeepredict. All rights reserved.</p>
+    </footer>
+
+    <!-- Shared scripts -->
+    <script src="predictions-data.js"></script>
+    <script src="utils.js"></script>
+    <script src="theme.js"></script>
 
     <script>
+        function renderStats() {
+            var stats = window.PredictionDB.getWinRateStats();
+            var bar = document.getElementById('statsBar');
+
+            bar.innerHTML =
+                '<div class="stat-card">' +
+                    '<div class="stat-value">' + stats.totalTips + '</div>' +
+                    '<div class="stat-label">Total Tips</div>' +
+                '</div>' +
+                '<div class="stat-card">' +
+                    '<div class="stat-value">' + stats.winRate + '%</div>' +
+                    '<div class="stat-label">Win Rate</div>' +
+                '</div>' +
+                '<div class="stat-card">' +
+                    '<div class="stat-value">' + stats.wonCount + '/' + stats.resolvedCount + '</div>' +
+                    '<div class="stat-label">Won / Resolved</div>' +
+                '</div>' +
+                '<div class="stat-card">' +
+                    '<div class="stat-value">' + stats.avgOdds + '</div>' +
+                    '<div class="stat-label">Average Odds</div>' +
+                '</div>';
+        }
+
+        function getStatusBadge(status) {
+            var cls = 'status-badge--pending';
+            if (status === 'Won') cls = 'status-badge--won';
+            else if (status === 'Lost') cls = 'status-badge--lost';
+            return '<span class="status-badge ' + cls + '">' + ZeepredictUtils.escapeHtml(status) + '</span>';
+        }
+
         function loadPredictions() {
-            const predictions = JSON.parse(localStorage.getItem('zeepredict_tips') || '[]');
-            const container = document.getElementById('predictions-list');
+            var tips = window.PredictionDB.getTips();
+            var container = document.getElementById('predictions-list');
             container.innerHTML = '';
 
-            if (predictions.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #64748b;">No predictions yet. Add some from the Admin panel!</p>';
+            renderStats();
+
+            if (tips.length === 0) {
+                container.innerHTML =
+                    '<div class="empty-state">' +
+                        '<p>No predictions yet.</p>' +
+                        '<a href="admin.html" class="btn">Add Your First Tip</a>' +
+                    '</div>';
                 return;
             }
 
-            predictions.forEach((tip, index) => {
-                const card = document.createElement('div');
+            tips.forEach(function (tip) {
+                var card = document.createElement('article');
                 card.className = 'prediction-card';
-                const matchDate = tip.matchDate ? new Date(tip.matchDate).toLocaleString() : 'Date not set';
-                card.innerHTML = `
-                    <div class="league">${tip.league || 'Unknown League'}</div>
-                    <div class="match">${tip.match}</div>
-                    <div class="match-time">📅 ${matchDate}</div>
-                    <div class="prediction">Prediction: <strong>${tip.prediction}</strong></div>
-                    <div class="odds">Odds: ${tip.odds}</div>
-                    <div class="writeup">${tip.writeup}</div>
-                    <small style="color: var(--text-muted);">Added: ${new Date(tip.date).toLocaleDateString()}</small>
-                `;
+
+                var matchDate = tip.matchDate
+                    ? new Date(tip.matchDate).toLocaleString()
+                    : (tip.date ? new Date(tip.date).toLocaleDateString() : 'Date not set');
+
+                var statusHtml = tip.status
+                    ? getStatusBadge(tip.status)
+                    : '';
+
+                card.innerHTML =
+                    '<div class="league">' + ZeepredictUtils.escapeHtml(tip.league || 'Unknown League') + '</div>' +
+                    '<div class="match">' + ZeepredictUtils.escapeHtml(tip.match) + ' ' + statusHtml + '</div>' +
+                    '<div class="match-time">' + matchDate + '</div>' +
+                    '<div class="prediction">Prediction: <strong>' + ZeepredictUtils.escapeHtml(tip.prediction) + '</strong></div>' +
+                    '<div class="odds">Odds: ' + ZeepredictUtils.escapeHtml(tip.odds) + '</div>' +
+                    '<div class="writeup">' + ZeepredictUtils.escapeHtml(tip.writeup) + '</div>';
+
                 container.appendChild(card);
             });
         }
 
-        window.onload = loadPredictions;
-
-        // Theme Toggle
-        const toggleBtn = document.getElementById('themeToggle');
-        const html = document.documentElement;
-
-        function setTheme(isLight) {
-            if (isLight) {
-                html.classList.add('light-mode');
-                toggleBtn.textContent = '☀️';
-            } else {
-                html.classList.remove('light-mode');
-                toggleBtn.textContent = '🌙';
-            }
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        }
-
-        toggleBtn.addEventListener('click', () => {
-            const isLight = !html.classList.contains('light-mode');
-            setTheme(isLight);
-        });
-
-        // Load saved theme
-        if (localStorage.getItem('theme') === 'light') {
-            setTheme(true);
-        }
+        window.addEventListener('DOMContentLoaded', loadPredictions);
     </script>
 </body>
 </html>

@@ -1,13 +1,33 @@
 // Shared Client-Side Data Helper for Zeepredict
 
 // Generates dynamic dates relative to today
-const getRelativeDateStr = (daysAgo) => {
-    const d = new Date();
+var getRelativeDateStr = function(daysAgo) {
+    var d = new Date();
     d.setDate(d.getDate() - daysAgo);
     return d.toISOString();
 };
 
-const SEED_TIPS = [
+// Migrate old localStorage data to new format (runs once)
+(function migrateOldData() {
+    var oldData = localStorage.getItem('zeepredict_tips');
+    if (oldData) {
+        try {
+            var oldTips = JSON.parse(oldData);
+            if (Array.isArray(oldTips) && oldTips.length > 0) {
+                var userTips = JSON.parse(localStorage.getItem('zeepredict_user_tips') || '[]');
+                oldTips.forEach(function(tip) {
+                    if (!tip.id) tip.id = 'user-' + Date.now() + Math.random().toString(36).substr(2, 5);
+                    userTips.push(tip);
+                });
+                localStorage.setItem('zeepredict_user_tips', JSON.stringify(userTips));
+            }
+            // Remove old key after migration
+            localStorage.removeItem('zeepredict_tips');
+        } catch(e) { /* ignore parse errors */ }
+    }
+})();
+
+var SEED_TIPS = [
     {
         id: "seed-1",
         match: "Liverpool vs Aston Villa",
@@ -127,14 +147,15 @@ window.PredictionDB = {
 
     // Add a new tip (always user tip)
     addTip: function(tipData) {
-        const userTips = getUserTips();
-        const newTip = {
+        var userTips = getUserTips();
+        var newTip = {
             id: 'user-' + Date.now(),
             match: tipData.match,
             prediction: tipData.prediction,
             odds: tipData.odds || '1.00',
             league: tipData.league || 'Other',
             writeup: tipData.writeup || '',
+            matchDate: tipData.matchDate || null,
             date: new Date().toISOString(),
             status: tipData.status || 'Pending'
         };
