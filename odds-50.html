@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Zeepredict - 50+ Odds Predictions">
+    <meta name="keywords" content="sports predictions, football tips, 50 odds">
+    <meta property="og:title" content="Zeepredict - 50+ Odds Predictions">
+    <meta property="og:type" content="website">
+    <title>Zeepredict - 50 Odds</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9917;</text></svg>">
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .prediction-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .prediction-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        .prediction-card .league {
+            color: #60a5fa;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .light-mode .prediction-card .league {
+            color: #3b82f6;
+        }
+        .prediction-card .match {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        .prediction-card .prediction {
+            color: var(--success);
+            font-size: 1.1rem;
+            margin: 0.5rem 0;
+        }
+        .prediction-card .odds {
+            color: #ff1493;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .prediction-card .writeup {
+            margin-top: 1rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+        .match-time {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 8px;
+        }
+        .empty-state {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 4rem 1rem;
+        }
+        .page-title {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .page-subtitle {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+        .nav-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .nav-tabs a {
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: var(--text-muted);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        .nav-tabs a:hover {
+            color: var(--accent);
+        }
+        .nav-tabs a.active {
+            color: #ff1493;
+            border-bottom-color: #ff1493;
+        }
+        .odds-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            background: rgba(255, 20, 147, 0.15);
+            color: #ff1493;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        .high-risk-warning {
+            background: rgba(255, 20, 147, 0.1);
+            border-left: 4px solid #ff1493;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1 class="logo-text">&#9917; Zeepredict</h1>
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="predictions.html">All Predictions</a>
+        </nav>
+        <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode" aria-label="Toggle theme">&#127769;</button>
+    </header>
+
+    <main class="container">
+        <h1 class="page-title">💎 50+ Odds Predictions</h1>
+        <p class="page-subtitle">Extreme odds with massive payout potential - use with caution</p>
+
+        <nav class="nav-tabs">
+            <a href="game-of-the-day.html">Game of Day</a>
+            <a href="odds-5.html">5 Odds</a>
+            <a href="odds-10.html">10 Odds</a>
+            <a href="odds-50.html" class="active">50 Odds</a>
+        </nav>
+
+        <div class="high-risk-warning">
+            ⚠️ <strong>High Risk:</strong> These are extreme odds predictions. Higher odds mean lower probability of winning. Use with caution and only bet what you can afford to lose.
+        </div>
+
+        <section id="predictions-list" aria-label="50 odds predictions list"></section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 Zeepredict. All rights reserved.</p>
+    </footer>
+
+    <script src="predictions-data.js"></script>
+    <script src="utils.js"></script>
+    <script src="theme.js"></script>
+
+    <script>
+        function loadOdds50Predictions() {
+            var container = document.getElementById('predictions-list');
+            var tips = window.PredictionDB.getTips();
+            
+            // Filter for predictions with odds 15+
+            var filtered = tips.filter(function(tip) {
+                var odds = parseFloat(tip.odds);
+                return odds >= 15.0;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>No 50+ odds predictions available yet.</p></div>';
+                return;
+            }
+
+            filtered.forEach(function(tip) {
+                var matchDate = tip.matchDate
+                    ? new Date(tip.matchDate).toLocaleString()
+                    : (tip.date ? new Date(tip.date).toLocaleDateString() : 'Date not set');
+
+                var card = document.createElement('article');
+                card.className = 'prediction-card';
+                card.innerHTML =
+                    '<div class="league">' + ZeepredictUtils.escapeHtml(tip.league || 'Unknown League') + '</div>' +
+                    '<div class="match">' + ZeepredictUtils.escapeHtml(tip.match) + ' <span class="odds-badge">50+ ODDS</span></div>' +
+                    '<div class="match-time">' + matchDate + '</div>' +
+                    '<div class="prediction">Prediction: <strong>' + ZeepredictUtils.escapeHtml(tip.prediction) + '</strong></div>' +
+                    '<div class="odds">Odds: ' + ZeepredictUtils.escapeHtml(tip.odds) + '</div>' +
+                    '<div class="writeup">' + ZeepredictUtils.escapeHtml(tip.writeup) + '</div>';
+
+                container.appendChild(card);
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', loadOdds50Predictions);
+    </script>
+</body>
+</html>
