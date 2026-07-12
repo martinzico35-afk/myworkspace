@@ -38,12 +38,19 @@
 
 body {
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background: var(--bg-primary);
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.88) 0%, rgba(255, 71, 87, 0.12) 100%),
+              url('https://images.unsplash.com/photo-1459865264687-595d652de67e?w=1920&q=80') center/cover no-repeat fixed;
   color: var(--text);
   margin: 0;
   padding: 0;
   transition: background 0.3s, color 0.3s;
   line-height: 1.6;
+  min-height: 100vh;
+}
+
+.light-mode {
+  background: linear-gradient(135deg, rgba(248, 250, 252, 0.92) 0%, rgba(255, 71, 87, 0.06) 100%),
+              url('https://images.unsplash.com/photo-1459865264687-595d652de67e?w=1920&q=80') center/cover no-repeat fixed;
 }
 
 img { max-width: 100%; display: block; }
