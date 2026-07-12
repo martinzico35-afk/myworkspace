@@ -97,6 +97,119 @@ var SEED_TIPS = [
         writeup: "Both teams have played extremely defensive football in recent matches. Expect a highly tactical, cagey affair with minimal risks taken in front of goal.",
         date: getRelativeDateStr(4), // 4 days ago
         status: "Lost"
+    },
+    // ===== 5 ODDS (4.0 - 6.5) =====
+    {
+        id: "seed-8",
+        match: "Tottenham vs Manchester United",
+        prediction: "Both Teams to Score & Over 2.5",
+        odds: "4.50",
+        league: "Premier League",
+        writeup: "Tottenham's high-press game against United's vulnerable backline guarantees goals. Both sides have been leaking chances, and with key attackers in form, this has all the makings of a goal-fest at the Tottenham Hotspur Stadium.",
+        date: getRelativeDateStr(0), // Today
+        status: "Pending"
+    },
+    {
+        id: "seed-9",
+        match: "AS Roma vs Lazio",
+        prediction: "Roma Win & Over 1.5 Goals",
+        odds: "5.00",
+        league: "Serie A",
+        writeup: "The Derby della Capitale at the Stadio Olimpico is always fiercely contested. Roma's home form has been exceptional this season, and with Dybala pulling the strings in midfield, they should edge past their city rivals in a match that produces goals.",
+        date: getRelativeDateStr(0), // Today
+        status: "Pending"
+    },
+    {
+        id: "seed-10",
+        match: "Benfica vs Porto",
+        prediction: "Draw No Bet - Benfica",
+        odds: "5.80",
+        league: "Primeira Liga",
+        writeup: "O Clássico in Portugal is often decided by fine margins. Benfica have been dominant at the Estádio da Luz, and with Porto struggling with injuries in defence, the Eagles have a strong chance to claim all three points.",
+        date: getRelativeDateStr(0), // Today
+        status: "Pending"
+    },
+    // ===== 10 ODDS (6.5 - 15.0) =====
+    {
+        id: "seed-11",
+        match: "West Ham vs Liverpool",
+        prediction: "West Ham Double Chance & BTTS",
+        odds: "8.50",
+        league: "Premier League",
+        writeup: "West Ham at the London Stadium have proven to be giant killers this season. Liverpool's away form has been shaky, and with the Hammers' physical approach and set-piece threat, they can at least avoid defeat in a game where both sides score.",
+        date: getRelativeDateStr(0), // Today
+        status: "Pending"
+    },
+    {
+        id: "seed-12",
+        match: "Lyon vs Paris Saint-Germain",
+        prediction: "Lyon to Win",
+        odds: "10.00",
+        league: "Ligue 1",
+        writeup: "PSG's away record against top Ligue 1 sides has been unconvincing despite their star power. Lyon have built a formidable home record with their high-energy press, and catching PSG on an off day could yield a massive upset at the Groupama Stadium.",
+        date: getRelativeDateStr(1), // Yesterday
+        status: "Won"
+    },
+    {
+        id: "seed-13",
+        match: "Sevilla vs Barcelona",
+        prediction: "Sevilla Win & Under 3.5 Goals",
+        odds: "12.00",
+        league: "La Liga",
+        writeup: "The Ramón Sánchez Pizjuán is one of the toughest grounds in Spain. Sevilla's defensive organization under pressure has been elite, and Barcelona's recent struggles away from home against physical sides make this a prime candidate for a home upset.",
+        date: getRelativeDateStr(0), // Today
+        status: "Pending"
+    },
+    {
+        id: "seed-14",
+        match: "Ajax vs Feyenoord",
+        prediction: "Correct Score 2-1",
+        odds: "14.00",
+        league: "Eredivisie",
+        writeup: "De Klassieker always delivers drama. Ajax's attacking flair at the Johan Cruijff ArenA combined with Feyenoord's counter-attacking threat suggests a 2-1 scoreline is the most likely outcome in this historic rivalry.",
+        date: getRelativeDateStr(2), // 2 days ago
+        status: "Lost"
+    },
+    // ===== 50+ ODDS (15.0+) =====
+    {
+        id: "seed-15",
+        match: "Sheriff Tiraspol vs Real Madrid",
+        prediction: "Sheriff Tiraspol to Win",
+        odds: "18.00",
+        league: "Champions League",
+        writeup: "History has shown that Champions League nights can produce miracles. Sheriff's artificial turf and compact defensive setup have troubled top sides before. With Real Madrid having one eye on the weekend El Clásico, a shock result isn't out of the question.",
+        date: getRelativeDateStr(0), // Today
+        status: "Pending"
+    },
+    {
+        id: "seed-16",
+        match: "Accra Lions vs Asante Kotoko",
+        prediction: "Accra Lions to Win 3-0",
+        odds: "25.00",
+        league: "Ghana Premier League",
+        writeup: "Accra Lions have been unbeaten at home for months, dominating possession and creating numerous chances. Kotoko's travel fatigue and defensive injuries could lead to a comprehensive home victory with a clean sheet.",
+        date: getRelativeDateStr(0), // Today
+        status: "Pending"
+    },
+    {
+        id: "seed-17",
+        match: "St. Pauli vs Bayern Munich",
+        prediction: "St. Pauli Double Chance & BTTS",
+        odds: "35.00",
+        league: "Bundesliga",
+        writeup: "The Millerntor Stadium is a fortress where bigger teams have struggled. St. Pauli's passionate home crowd and aggressive pressing style could trouble a Bayern side that often rotates ahead of Champions League fixtures.",
+        date: getRelativeDateStr(3), // 3 days ago
+        status: "Lost"
+    },
+    {
+        id: "seed-18",
+        match: "Cork City vs Shamrock Rovers",
+        prediction: "Cork City to Win 2-0",
+        odds: "50.00",
+        league: "League of Ireland",
+        writeup: "Cork City's recent form at Turner's Cross has been incredible, keeping four consecutive clean sheets. Shamrock Rovers are in a poor run of form, and the home advantage combined with Cork's defensive solidity could produce a surprise result.",
+        date: getRelativeDateStr(0), // Today
+        status: "Pending"
     }
 ];
 

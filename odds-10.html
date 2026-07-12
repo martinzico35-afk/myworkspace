@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Zeepredict - 5 Odds Predictions">
-    <meta name="keywords" content="sports predictions, football tips, 5 odds">
-    <meta property="og:title" content="Zeepredict - 5 Odds Predictions">
+    <meta name="description" content="Zeepredict - 10 Odds Predictions">
+    <meta name="keywords" content="sports predictions, football tips, 10 odds">
+    <meta property="og:title" content="Zeepredict - 10 Odds Predictions">
     <meta property="og:type" content="website">
-    <title>Zeepredict - 5 Odds</title>
+    <title>Zeepredict - 10 Odds</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9917;</text></svg>">
     <style>
@@ -48,7 +48,7 @@
             margin: 0.5rem 0;
         }
         .prediction-card .odds {
-            color: var(--sport-energy);
+            color: var(--sport-gold);
             font-size: 1rem;
             font-weight: 600;
         }
@@ -94,18 +94,26 @@
             color: var(--accent);
         }
         .nav-tabs a.active {
-            color: var(--sport-electric);
-            border-bottom-color: var(--sport-electric);
+            color: var(--sport-gold);
+            border-bottom-color: var(--sport-gold);
         }
         .odds-badge {
             display: inline-block;
             padding: 3px 8px;
-            background: rgba(0, 212, 255, 0.15);
-            color: var(--sport-electric);
+            background: rgba(255, 165, 2, 0.15);
+            color: var(--sport-gold);
             border-radius: 4px;
             font-size: 0.8rem;
             font-weight: 600;
             margin-left: 8px;
+        }
+        .medium-risk-warning {
+            background: rgba(255, 165, 2, 0.1);
+            border-left: 4px solid var(--sport-gold);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            color: var(--text-muted);
         }
     </style>
 </head>
@@ -124,17 +132,21 @@
     </header>
 
     <main class="container">
-        <h1 class="page-title">⭐ 5 Odds Predictions</h1>
-        <p class="page-subtitle">Medium-odds predictions with balanced risk/reward</p>
+        <h1 class="page-title">🔥 10 Odds Predictions</h1>
+        <p class="page-subtitle">High-value predictions with strong potential returns</p>
 
         <nav class="nav-tabs">
             <a href="game-of-the-day.html">Game of Day</a>
-            <a href="odds-5.html" class="active">5 Odds</a>
-            <a href="odds-10.html">10 Odds</a>
+            <a href="odds-5.html">5 Odds</a>
+            <a href="odds-10.html" class="active">10 Odds</a>
             <a href="odds-50.html">50 Odds</a>
         </nav>
 
-        <section id="predictions-list" aria-label="5 odds predictions list"></section>
+        <div class="medium-risk-warning">
+            ⚡ <strong>Medium-High Risk:</strong> These predictions carry higher odds, meaning lower probability but greater reward. Consider combining with safer picks.
+        </div>
+
+        <section id="predictions-list" aria-label="10 odds predictions list"></section>
     </main>
 
     <footer class="site-footer">
@@ -146,18 +158,18 @@
     <script src="theme.js"></script>
 
     <script>
-        function loadOdds5Predictions() {
+        function loadOdds10Predictions() {
             var container = document.getElementById('predictions-list');
             var tips = window.PredictionDB.getTips();
             
-            // Filter for predictions with odds around 5
+            // Filter for predictions with odds between 6.5 and 15
             var filtered = tips.filter(function(tip) {
                 var odds = parseFloat(tip.odds);
-                return odds >= 4.0 && odds < 6.5;
+                return odds >= 6.5 && odds < 15.0;
             });
 
             if (filtered.length === 0) {
-                container.innerHTML = '<div class="empty-state"><p>No 5 odds predictions available yet.</p></div>';
+                container.innerHTML = '<div class="empty-state"><p>No 10 odds predictions available yet. Add some in the admin panel!</p></div>';
                 return;
             }
 
@@ -170,7 +182,7 @@
                 card.className = 'prediction-card';
                 card.innerHTML =
                     '<div class="league">' + ZeepredictUtils.escapeHtml(tip.league || 'Unknown League') + '</div>' +
-                    '<div class="match">' + ZeepredictUtils.escapeHtml(tip.match) + ' <span class="odds-badge">5 ODDS</span></div>' +
+                    '<div class="match">' + ZeepredictUtils.escapeHtml(tip.match) + ' <span class="odds-badge">10 ODDS</span></div>' +
                     '<div class="match-time">' + matchDate + '</div>' +
                     '<div class="prediction">Prediction: <strong>' + ZeepredictUtils.escapeHtml(tip.prediction) + '</strong></div>' +
                     '<div class="odds">Odds: ' + ZeepredictUtils.escapeHtml(tip.odds) + '</div>' +
@@ -180,7 +192,7 @@
             });
         }
 
-        window.addEventListener('DOMContentLoaded', loadOdds5Predictions);
+        window.addEventListener('DOMContentLoaded', loadOdds10Predictions);
     </script>
 </body>
 </html>
