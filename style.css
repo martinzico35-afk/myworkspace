@@ -116,6 +116,12 @@ body.bg-sporty > * {
   font-weight: 700;
 }
 
+.logo-img {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
 /* ---- Navigation ---- */
 .nav {
   display: flex;
