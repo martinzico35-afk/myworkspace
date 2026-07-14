@@ -239,6 +239,19 @@ body.bg-sporty > * {
   margin-top: auto;
 }
 
+.site-footer .social-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+  font-size: 0.95rem;
+}
+
+.site-footer .social-link:hover {
+  color: var(--accent);
+}
+
 /* ---- Toast Notifications ---- */
 #toast-container {
   position: fixed;
