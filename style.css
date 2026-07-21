@@ -193,10 +193,20 @@ img { max-width: 100%; display: block; }
   text-decoration: none;
   transition: color 0.2s;
   font-size: 0.95rem;
+  vertical-align: middle;
 }
 
 .site-footer .social-link:hover {
   color: var(--accent);
+}
+
+.site-footer .social-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  margin-right: 4px;
+  fill: currentColor;
 }
 
 /* ---- Toast Notifications ---- */
