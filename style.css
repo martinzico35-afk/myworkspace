@@ -37,7 +37,8 @@
 
 body {
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background: var(--bg-primary);
+  background: linear-gradient(rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.88)),
+              url('https://images.unsplash.com/photo-1459865264687-595d652de67e?w=1920&q=80') center/cover no-repeat fixed;
   color: var(--text);
   margin: 0;
   padding: 0;
@@ -47,7 +48,8 @@ body {
 }
 
 .light-mode {
-  background: var(--bg-primary);
+  background: linear-gradient(rgba(248, 250, 252, 0.92), rgba(248, 250, 252, 0.92)),
+              url('https://images.unsplash.com/photo-1459865264687-595d652de67e?w=1920&q=80') center/cover no-repeat fixed;
 }
 
 img { max-width: 100%; display: block; }
