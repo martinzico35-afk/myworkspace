@@ -4,20 +4,25 @@
   "private": true,
   "description": "Responsible football-analysis prototype and server-only prediction API foundation",
   "main": "server.js",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "start": "node server.js",
     "test": "node --test",
     "check": "npm test && npm audit --audit-level=high"
   },
   "dependencies": {
+    "@google-cloud/firestore": "^9.1.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "express-rate-limit": "^8.7.0",
     "firebase-admin": "^14.4.0",
     "helmet": "^8.3.0"
   },
-  "devDependencies": { "supertest": "^7.2.2" },
+  "devDependencies": {
+    "supertest": "^7.2.2"
+  },
   "overrides": {
     "uuid": "^11.1.1"
   }
